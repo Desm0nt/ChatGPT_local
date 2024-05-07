@@ -2,20 +2,6 @@
 
 ChatGPT clone with added features
 
-## Features
-
-- Multiple chats completions simultaneously
-- Send chat with/without history
-- Choose model from a variety of GPT-3 models
-- Stores your chats in local storage
-- Same user interface as the original ChatGPT
-- Edit title of the chat
-
-## Requirements
-
-- Node JS
-- npm
-- [Create Open AI account](https://beta.openai.com/signup/)
 
 ## Setup
 
