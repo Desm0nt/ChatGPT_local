@@ -15,3 +15,4 @@ watchdog
 docx2txt
 html2text
 FastAPI
+transformers
