@@ -102,7 +102,7 @@ export default function useBot({ index, chat }: Props) {
             handleOnCompletion
           );
         }else{
-          await fetchResults(
+          await fetchResult(
             prevChats,
             selectedModal,
             signal,

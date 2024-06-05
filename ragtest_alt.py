@@ -74,7 +74,7 @@ WikiReader = CustomWikiReader(
 print("reading docs")
 
 # define embedding function
-#embed_model = HuggingFaceEmbedding(model_name="thenlper/gte-base")
+#embed_model = HuggingFaceEmbedding(model_name="hivaze/ru-e5-base")
 embed_model = HuggingFaceEmbedding(model_name="intfloat/multilingual-e5-small")
 
 # save to disk

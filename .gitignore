@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+chroma_db
+extyl-docs
 dist
 dist-ssr
 *.local

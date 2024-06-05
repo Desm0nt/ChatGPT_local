@@ -11,7 +11,7 @@ const defaultRagApiUrl = config.ragApiUrl;
 
 
 const modalsList = [
-  "TheBloke/SOLAR-10.7B-Instruct-v1.0-GPTQ",
+  "TheBloke/Meta-Llama-3-8B-Instruct-Q8_0.gguf",
   "gpt-3.5-turbo",
 ];
 

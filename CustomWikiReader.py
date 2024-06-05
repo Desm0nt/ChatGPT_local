@@ -10,6 +10,7 @@ from typing import List
 from llama_index.core.schema import Document
 from tqdm import tqdm
 from urllib.parse import unquote
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 def remove_extyl_docs_folder():
     extyl_docs_folder = 'extyl-docs'
@@ -124,9 +125,17 @@ class CustomWikiReader:
                         print(f"Файл {decoded_file_name} успешно скачан.")
             
             if content_text:
-                return Document(source_uri=url, text=f"{heading_text}\n\n{content_text}")
+                #return Document(source_uri=url, metadata={"source_uri": url}, text=f"{heading_text}\n\n{content_text}") 
+                return Document(source_uri=url, text=f"{heading_text}\n\n{content_text}")              
         else:
             print(f"Failed to fetch: {url}")
+
+    def parse_page_wrapper(self, url):
+        try:
+            return self.parse_page(url)
+        except Exception as e:
+            print(f"Failed to fetch: {url}, error: {e}")
+            return None
 
     # def load_data(self) -> List[Document]:
     #     if not self.session:
@@ -153,18 +162,32 @@ class CustomWikiReader:
         documents = []
         merged_doc = ""
         merged_urls = []
-        for url in tqdm(all_urls, desc="Получение документов", unit=" docs"):
-            doc = self.parse_page(url)
-            if doc:
-                doc_lines = doc.text.strip().split("\n")
-                non_empty_lines = [line for line in doc_lines if line.strip()]
-                if len(non_empty_lines) >= 8:
-                    documents.append(doc)
-                else:
-                    merged_doc += doc.text + "\n\n"
-                    merged_urls.append(url)
+        
+        with ThreadPoolExecutor(max_workers=7) as executor:
+            futures = [executor.submit(self.parse_page_wrapper, url) for url in all_urls]
+            for future in tqdm(as_completed(futures), total=len(futures), desc="Получение документов", unit=" docs"):
+                try:
+                    doc = future.result()
+                    if doc:
+                        doc_lines = doc.text.strip().split("\n")
+                        non_empty_lines = [line for line in doc_lines if line.strip()]
+                        if len(non_empty_lines) >= 8:
+                            documents.append(doc)
+                        else:
+                            try:
+                                merged_doc += doc.text + "\n\n"
+                            except Exception as e:
+                                print(f"Ошибка при получении doc.text: {e}")
+                            try:
+                                #merged_urls.append(doc.metadata["source_uri"])
+                                merged_urls.append(doc.source_uri)
+                            except Exception as e:
+                                pass
+                except Exception as e:
+                    print(f"Ошибка при получении документа: {e}")
 
         if merged_doc:
+            #documents.append(Document(metadata={"source_uri": ", ".join(merged_urls)}, text=merged_doc.strip()))
             documents.append(Document(source_uri=", ".join(merged_urls), text=merged_doc.strip()))
 
         return documents

@@ -160,7 +160,7 @@ const userMessage = messages[messages.length - 1].content;
       let chunk1 = new TextDecoder("utf-8").decode(value, { stream: true });
    
       let chunks1 = JSON.parse(chunk1).result.response
-      messages.push({role: "system", content: `Ты - лучшая экспертная система вопросов и ответов. Старайся использовать для ответа релевантную информацию если она есть в диалоге. Отвечай на русском.\n\n Справочная информация: ${chunks1}` })
+      messages.push({role: "system", content: `Ты - лучшая экспертная система вопросов и ответов, твоя задача дать максимально развернутый и подробный релевантный ответ. Используй для ответа релевантную информацию из диалога. Активно задействуй справочную информацию. Отвечай на русском.\n\n Справочная информация: ${chunks1}` })
       if (true) {
           await fetchResults(messages, modal, signal, onData, onDataEdit, onCompletion);
         break;

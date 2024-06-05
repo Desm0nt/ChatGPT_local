@@ -21,53 +21,57 @@ export default function MessageSelector() {
     ]
   );
 
-	async function chooseModelTrained(){
-		await fetch( config.apiUrl+ '/v1/internal/model/load', {
-      method: `POST`,
-      headers: {
-        "content-type": `application/json`,
-        accept: `text/event-stream`,
-        Authorization: `Bearer ${localStorage.getItem("apikey")}`,
-      },
-      body: JSON.stringify({
-				"model_name": "solar19_s133_00004_r128_a64_Q8_0.gguf",
-				"args": {"n_gpu_layers": 61},
-				"settings": {}
-			}),
-    });
-	}
+  async function chooseModelTrained() {
+    // Временно закомментировано для отладки
+    // await fetch( config.apiUrl+ '/v1/internal/model/load', {
+    //   method: `POST`,
+    //   headers: {
+    //     "content-type": `application/json`,
+    //     accept: `text/event-stream`,
+    //     Authorization: `Bearer ${localStorage.getItem("apikey")}`,
+    //   },
+    //   body: JSON.stringify({
+    //     "model_name": "Meta-Llama-3-8B-Instruct-Q8_0.gguf",
+    //     "args": {"cache_4bit": true, "max_seq_len": 32786},
+    //     "settings": {}
+    //   }),
+    // });
+  }
 
 	async function chooseModelStandart(){
-		await fetch(config.apiUrl + '/v1/internal/model/load', {
-      method: `POST`,
-      headers: {
-        "content-type": `application/json`,
-        accept: `text/event-stream`,
-        Authorization: `Bearer ${localStorage.getItem("apikey")}`,
-      },
-      body: JSON.stringify({
-				"model_name": "solar-10.7b-instruct-v1.0.Q4_K_M.gguf",
-				"args": {"n_gpu_layers": 61},
-				"settings": {}
-      }),
-    });
+    
+    // Временно закомментировано для отладки
+    // await fetch( config.apiUrl+ '/v1/internal/model/load', {
+    //   method: `POST`,
+    //   headers: {
+    //     "content-type": `application/json`,
+    //     accept: `text/event-stream`,
+    //     Authorization: `Bearer ${localStorage.getItem("apikey")}`,
+    //   },
+    //   body: JSON.stringify({
+    //     "model_name": "Meta-Llama-3-8B-Instruct-Q8_0.gguf",
+    //     "args": {"cache_4bit": true, "max_seq_len": 32786},
+    //     "settings": {}
+    //   }),
+    // });
 
 	}
 
 	async function chooseModelMixtral(){
-		await fetch(config.apiUrl + '/v1/internal/model/load', {
-      method: `POST`,
-      headers: {
-        "content-type": `application/json`,
-        accept: `text/event-stream`,
-        Authorization: `Bearer ${localStorage.getItem("apikey")}`,
-      },
-      body: JSON.stringify({
-				"model_name": "Nous-Hermes-2-Mixtral-8x7B-DPO.Q4_K_M.gguf",
-				"args": {"cpu": true, "max_seq_len": 8192},
-				"settings": {}
-      }),
-    });
+    // Временно закомментировано для отладки
+    // await fetch( config.apiUrl+ '/v1/internal/model/load', {
+    //   method: `POST`,
+    //   headers: {
+    //     "content-type": `application/json`,
+    //     accept: `text/event-stream`,
+    //     Authorization: `Bearer ${localStorage.getItem("apikey")}`,
+    //   },
+    //   body: JSON.stringify({
+    //     "model_name": "Meta-Llama-3-8B-Instruct-Q8_0.gguf",
+    //     "args": {"cache_4bit": true, "max_seq_len": 32786},
+    //     "settings": {}
+    //   }),
+    // });
 
 	}
 
@@ -100,17 +104,17 @@ export default function MessageSelector() {
 		localStorage.setItem('prev', e.target.id)
     // e.target.id === 'question' ? chooseModelStandart() : chooseModelTrained()
     // setRag(e.target.id === 'question' ? false : true)
-    if (e.target.id === 'question') {
+    if (e.target.id === 'tasks') {
       chooseModelStandart()
-      setRag(false)
+      setRag(true)
     } else if (e.target.id === 'orders') {
-      chooseModelMixtral()
+      chooseModelStandart()
       setRag(true)
     } else {
-      chooseModelTrained()
+      chooseModelStandart()
       setRag(true)
     }
-    localStorage.setItem('rag', `${e.target.id === 'question'}`)
+    localStorage.setItem('rag', `${e.target.id === 'tasks'}`)
 	};
 
   function AddAnimation() {
@@ -159,12 +163,9 @@ export default function MessageSelector() {
           </div>
         </div>
       </div>
-      <div className="text-gray-300 text-lg bg-transparent w-1/2 rounded mx-auto my-4 selector relative">
+      <div className="text-gray-300 text-lg bg-transparent w-1/2 rounded mx-auto my-2 selector relative">
         <div className="selector-text">
-          <p className="px-4 py-3 cursor-pointer selector-point" id="tasks" onClick={addActiveClass}>Анализ постановок задач</p>
-          <p className="px-4 py-3 cursor-pointer selector-point" id="leads" onClick={addActiveClass}>Анализ лидов</p>
-          <p className="px-4 py-3 cursor-pointer selector-point" id="orders" onClick={addActiveClass}>Анализ договоров</p>
-          <p className="px-4 py-3 cursor-pointer selector-point" id="question" onClick={addActiveClass}>Вопрос по регламентам</p>
+          <p className="px-4 py-3 cursor-pointer selector-point" id="tasks" onClick={addActiveClass}>Вопросы по регламентам</p>
         </div>
       </div>
     </div>
