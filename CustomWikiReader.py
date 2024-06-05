@@ -116,7 +116,7 @@ class CustomWikiReader:
                     file_url = urljoin(url, link['href'])
                     file_name = os.path.basename(file_url)
                     file_ext = os.path.splitext(file_name)[1].lower()
-                    if file_ext in ['.doc', '.docx', '.csv', '.txt']:
+                    if file_ext in ['.docx', '.csv', '.txt']:
                         # Декодируем имя файла
                         decoded_file_name = unquote(file_name)
                         file_path = os.path.join('extyl-docs', decoded_file_name).replace('\\', '/')
