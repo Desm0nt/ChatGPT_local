@@ -134,7 +134,7 @@ retriever0 = VectorIndexRetriever(
     )
 retriever = VectorIndexRetriever(
         index=index,
-        similarity_top_k=4,
+        similarity_top_k=3,
     )
 
 def query_processing0(query):
@@ -154,7 +154,7 @@ def query_processing0(query):
 def query_processing(query):
     retriever1in = VectorIndexRetriever(
         index=index,
-        similarity_top_k=4,
+        similarity_top_k=3,
     )
     response_synthesizer = get_response_synthesizer(llm=OpenAI(api_base=os.environ.get("OPENAI_BASE") +"/v1", api_key="11111", timeout=999999), text_qa_template=text_qa_template, refine_template=refine_template, summary_template=text_qa_template, response_mode="refine")
     query_engine = RetrieverQueryEngine(
