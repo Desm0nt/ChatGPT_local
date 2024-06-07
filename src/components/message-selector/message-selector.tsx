@@ -78,16 +78,21 @@ export default function MessageSelector() {
 	function saveChoosenPoint(){
 		const activeId = localStorage.getItem('prev')
 		const selectorText = document.querySelector('#selector-text')
-		if(activeId !== null){
-			text = document.querySelector(`#${activeId}`)!.innerHTML
-			document.querySelector(`#${activeId}`)?.classList.add('active')
-			selectorText!.innerHTML = text!
+		const activeElement = document.querySelector(`#${activeId}`)
+		if(activeId !== null && activeElement){
+			text = activeElement.innerHTML
+			activeElement.classList.add('active')
+
 		}else{
-			text = document.querySelector(`#tasks`)!.innerHTML
-			document.querySelector(`#tasks`)?.classList.add('active')
-			selectorText!.innerHTML = text!
+			const tasksElement = document.querySelector('#tasks');
+			if (tasksElement) {
+			 text = tasksElement.innerHTML;
+      tasksElement.classList.add('active');
+}
 		}
-		
+		if (selectorText) {
+    selectorText.innerHTML = text || '';
+  }
 	}
 
 	function addActiveClass(e: any){

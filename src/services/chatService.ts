@@ -154,17 +154,22 @@ const userMessage = messages[messages.length - 1].content;
       throw new Error("Error fetching results");
     }
     const reader: any = response.body?.getReader();
+    const chunks = [];
     while (true) {
       const { done, value } = await reader.read();
-
-      let chunk1 = new TextDecoder("utf-8").decode(value, { stream: true });
-   
-      let chunks1 = JSON.parse(chunk1).result.response
-      messages.push({role: "system", content: `Ты - лучшая экспертная система вопросов и ответов, твоя задача дать максимально развернутый и подробный релевантный ответ. Используй для ответа релевантную информацию из диалога. Активно задействуй справочную информацию. Отвечай на русском.\n\n Справочная информация: ${chunks1}` })
-      if (true) {
-          await fetchResults(messages, modal, signal, onData, onDataEdit, onCompletion);
+      if (done) {
         break;
       }
+      let chunk1 = new TextDecoder("utf-8").decode(value, { stream: true });
+      chunks.push(chunk1);
+      //let chunk1 = new TextDecoder("utf-8").decode(value, { stream: true });
+   
+      //let chunks1 = JSON.parse(chunk1).result.response
+      //messages.push({role: "system", content: `Ты - лучшая экспертная система вопросов и ответов. Старайся использовать для ответа релевантную информацию если она есть в диалоге. Отвечай на русском.\n\n Справочная информация: ${chunks1}` })
+      //if (true) {
+       //   await fetchResults(messages, modal, signal, onData, onDataEdit, onCompletion);
+      //  break;
+//  }
       // let chunk = new TextDecoder("utf-8").decode(value, { stream: true });
 
       // const chunks = chunk.split("\n").filter((x: string) => x !== "");
@@ -181,6 +186,9 @@ const userMessage = messages[messages.length - 1].content;
 	    //   fullMessage += data.choices[0].delta.content;
       // });
     }
+        const result = JSON.parse(chunks.join("")).result.response;
+    messages.push({ role: "system", content: `Ты - лучшая экспертная система вопросов и ответов, твоя задача дать максимально развернутый и подробный релевантный ответ. Используй для ответа релевантную информацию из диалога. Активно задействуй справочную информацию. Отвечай на русском.\n\n Справочная информация: ${result}` });
+        await fetchResults(messages, modal, signal, onData, onDataEdit, onCompletion);
   } catch (error) {
     if (error instanceof DOMException || error instanceof Error) {
       throw new Error(error.message);
